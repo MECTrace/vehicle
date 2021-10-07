@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,6 +33,9 @@ public class SendingScheduler {
 
     @Value("${server.ssl.key-store-password}")
     private String keyPassword;
+
+    @Value("${target.edge-node.url}")
+    private String edgeNodeURL;
 
 
 
@@ -92,9 +96,7 @@ public class SendingScheduler {
 
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, header);
 
-            String serverUrl = "https://localhost:8082/api/edge/upload/vehicle/";
-
-            ResponseEntity<String> response = restTemplate.postForEntity(serverUrl, requestEntity, String.class);
+            ResponseEntity<String> response = restTemplate.postForEntity(edgeNodeURL, requestEntity, String.class);
 
 
             // 5xx 응답 : edge server error
@@ -123,7 +125,8 @@ public class SendingScheduler {
 
         // todo cerFilePath 왜 no such file or directory 로 나오는지? 하드코딩 지우고 확인해볼것
         KeyStore keyStore = KeyStore.getInstance("JKS");
-        keyStore.load(new FileInputStream("/Users/penta/IdeaProjects/cloudEdge/transmitter/src/main/resources/client-key.jks"), this.keyPassword.toCharArray());
+        keyStore.load(new FileInputStream(certFilePath), this.keyPassword.toCharArray());
+        // keyStore.load(new FileInputStream("/Users/penta/IdeaProjects/cloudEdge/transmitter/src/main/resources/client-key.jks"), this.keyPassword.toCharArray());
         PrivateKey key = (PrivateKey) keyStore.getKey("client-key", this.keyPassword.toCharArray());
         return (PrivateKey) keyStore.getKey("client-key", this.keyPassword.toCharArray());
     }

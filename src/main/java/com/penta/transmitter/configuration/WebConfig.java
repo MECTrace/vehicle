@@ -12,20 +12,21 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.SSLContext;
 import java.net.URL;
+import java.nio.file.Paths;
 
 
 @Configuration
 public class WebConfig {
 
     @Value("${server.ssl.key-store}")
-    private URL keyStorePath;
+    private String keyStorePath;
 
     @Value("${server.ssl.key-store-password}")
     private String keyStorePassword;
 
 
     @Value("${server.ssl.trust-store}")
-    private URL trustKeyStorePath;
+    private String trustKeyStorePath;
 
     @Value("${server.ssl.trust-store-password}")
     private String trustKeyStorePassword;
@@ -34,8 +35,8 @@ public class WebConfig {
     @Bean
     public RestTemplate restTemplate() throws Exception {
             SSLContext sslContext = new SSLContextBuilder()
-                    .loadKeyMaterial(keyStorePath, keyStorePassword.toCharArray(), keyStorePassword.toCharArray())
-                    .loadTrustMaterial(trustKeyStorePath, trustKeyStorePassword.toCharArray())
+                    .loadKeyMaterial(Paths.get(keyStorePath).toUri().toURL(), keyStorePassword.toCharArray(), keyStorePassword.toCharArray())
+                    .loadTrustMaterial(Paths.get(trustKeyStorePath).toUri().toURL(), trustKeyStorePassword.toCharArray())
                     .build();
             SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext);
             HttpClient httpClient = HttpClients.custom()
