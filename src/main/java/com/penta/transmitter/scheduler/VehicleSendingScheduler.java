@@ -103,11 +103,12 @@ public class VehicleSendingScheduler {
 
     private boolean verifyFile(String fileName) {
         String carNo = getCarNo(fileName);
+        log.info("추출된 차량 번호 :: {} ", carNo);
+        log.info("file명에 차량번호가 있는지 :: {}  & vehicleCertMap에 해당 차량의 정보가 있는지 :: {}", StringUtils.hasText(carNo),  vehicleCertMap.hasVehicleNo(carNo));
         return StringUtils.hasText(carNo) ? vehicleCertMap.hasVehicleNo(carNo) : false;
     }
 
     private String getCarNo(String fileName) {
-        log.info("getCarNo()에 인자로 들어온 filename :: {}", fileName);
         Pattern pattern = Pattern.compile("\\d{2,3}[가-힣]{1}\\d{4}");
         Matcher matcher = pattern.matcher(fileName);
         return matcher.find() ? matcher.group() : "";
