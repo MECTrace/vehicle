@@ -117,6 +117,7 @@ public class VehicleSendingScheduler {
         Matcher testMatcher = testPattern.matcher(fileName);
         if(testMatcher.find()) {
             log.info("영문은된다!!!!!!!!!!!! >> {}", fileName);
+            log.info("영문 정규식으로 매칭된 값 >>  {} ", testMatcher.group());
         }
 
         Pattern pattern = Pattern.compile("\\d{2,3}[가-힣]{1}\\d{4}");
