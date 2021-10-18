@@ -108,6 +108,7 @@ public class VehicleSendingScheduler {
         String encodedFileName = new String(fileName.getBytes(StandardCharsets.UTF_8),StandardCharsets.UTF_8);
         String carNo = getCarNo(encodedFileName);
         log.info("인코딩된 차량 번호 :: {} ", encodedFileName);
+        log.info("추출된 carNo :: {}",carNo);
         log.info("file명에 차량번호가 있는지 :: {}  & vehicleCertMap에 해당 차량의 정보가 있는지 :: {}", StringUtils.hasText(carNo),  vehicleCertMap.hasVehicleNo(carNo));
         return StringUtils.hasText(carNo) ? vehicleCertMap.hasVehicleNo(carNo) : false;
     }
