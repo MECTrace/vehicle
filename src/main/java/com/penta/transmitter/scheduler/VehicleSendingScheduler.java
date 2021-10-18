@@ -105,7 +105,7 @@ public class VehicleSendingScheduler {
     @SneakyThrows
     private boolean verifyFile(String fileName) {
         log.info("fileName :: {}",fileName);
-        String encodedFileName = new String(fileName.getBytes(StandardCharsets.UTF_8),"euc-kr");
+        String encodedFileName = new String(fileName.getBytes(StandardCharsets.UTF_8),StandardCharsets.UTF_8);
         String carNo = getCarNo(encodedFileName);
         log.info("인코딩된 차량 번호 :: {} ", encodedFileName);
         log.info("file명에 차량번호가 있는지 :: {}  & vehicleCertMap에 해당 차량의 정보가 있는지 :: {}", StringUtils.hasText(carNo),  vehicleCertMap.hasVehicleNo(carNo));
@@ -113,13 +113,6 @@ public class VehicleSendingScheduler {
     }
 
     private String getCarNo(String fileName) {
-        Pattern testPattern = Pattern.compile("\\d{2,3}[A-Z]{1}\\d{4}");
-        Matcher testMatcher = testPattern.matcher(fileName);
-        if(testMatcher.find()) {
-            log.info("영문은된다!!!!!!!!!!!! >> {}", fileName);
-            log.info("영문 정규식으로 매칭된 값 >>  {} ", testMatcher.group());
-        }
-
         Pattern pattern = Pattern.compile("\\d{2,3}[가-힣]{1}\\d{4}");
         Matcher matcher = pattern.matcher(fileName);
         return matcher.find() ? matcher.group() : "";
