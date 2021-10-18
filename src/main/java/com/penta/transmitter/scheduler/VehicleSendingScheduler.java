@@ -181,6 +181,14 @@ public class VehicleSendingScheduler {
 
     @SneakyThrows
     private RestTemplate getRestTemplate(VehicleCert cert) {
+
+        log.info("------------------------VehicleCert object------------------------");
+        log.info("CERTPATH :: {} ",cert.getCertPath());
+        log.info("CERT-ALIAS :: {} ",cert.getCertAlias());
+        log.info("TRUST_STORE_PATH :: {} ",cert.getTrustStorePath());
+
+        log.info("AS URI >>>>> {}", Paths.get(cert.getCertPath()).toUri().toURL());
+
         SSLContext sslContext = new SSLContextBuilder()
                 .loadKeyMaterial(Paths.get(cert.getCertPath()).toUri().toURL(), cert.getCertPassword().toCharArray(), cert.getCertPassword().toCharArray())
                 .loadTrustMaterial(Paths.get(cert.getTrustStorePath()).toUri().toURL(), cert.getTrustStorePassword().toCharArray())
