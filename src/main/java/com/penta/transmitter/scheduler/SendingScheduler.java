@@ -24,10 +24,12 @@ import java.nio.file.StandardCopyOption;
 import java.security.*;
 import java.util.stream.Stream;
 
+
 @Component
 @Slf4j
 public class SendingScheduler {
 
+/*
     @Value("${server.ssl.key-store}")
     private String certFilePath;
 
@@ -36,8 +38,6 @@ public class SendingScheduler {
 
     @Value("${target.edge-node.url}")
     private String edgeNodeURL;
-
-
 
     private final Path targetLocation;
     private final Path doneLocation;
@@ -58,11 +58,12 @@ public class SendingScheduler {
     }
 
 
-    @Scheduled(fixedDelay = 500000)
+    @Scheduled(fixedDelay = 300000)
     @SneakyThrows
     public void sendToEdge() {
 
         if (checkFilePresent(this.targetLocation)) {
+
             File dir = new File(this.targetLocation.toString());
             File[] fileList = dir.listFiles();
 
@@ -123,7 +124,6 @@ public class SendingScheduler {
     @SneakyThrows
     private PrivateKey getPrivateKey(String certFilePath) {
 
-        // todo cerFilePath 왜 no such file or directory 로 나오는지? 하드코딩 지우고 확인해볼것
         KeyStore keyStore = KeyStore.getInstance("JKS");
         keyStore.load(new FileInputStream(certFilePath), this.keyPassword.toCharArray());
         // keyStore.load(new FileInputStream("/Users/penta/IdeaProjects/cloudEdge/transmitter/src/main/resources/client-key.jks"), this.keyPassword.toCharArray());
@@ -137,4 +137,7 @@ public class SendingScheduler {
             return entries.filter(f -> !(f.toString().contains(".DS_Store")) && !(f.toFile().isDirectory())).findFirst().isPresent();
         }
     }
+
+ */
+
 }
