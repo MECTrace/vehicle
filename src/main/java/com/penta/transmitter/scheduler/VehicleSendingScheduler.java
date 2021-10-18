@@ -102,6 +102,7 @@ public class VehicleSendingScheduler {
 
 
     private boolean verifyFile(String fileName) {
+        log.info("fileName :: {}",fileName);
         String carNo = getCarNo(fileName);
         log.info("추출된 차량 번호 :: {} ", carNo);
         log.info("file명에 차량번호가 있는지 :: {}  & vehicleCertMap에 해당 차량의 정보가 있는지 :: {}", StringUtils.hasText(carNo),  vehicleCertMap.hasVehicleNo(carNo));
