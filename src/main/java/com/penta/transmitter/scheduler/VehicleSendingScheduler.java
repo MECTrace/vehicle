@@ -105,6 +105,7 @@ public class VehicleSendingScheduler {
     @SneakyThrows
     private boolean verifyFile(String fileName) {
         log.info("fileName :: {}",fileName);
+        log.info("fileName length :: {}", fileName.length());
         String encodedFileName = new String(fileName.getBytes(StandardCharsets.UTF_8),StandardCharsets.UTF_8);
         String carNo = getCarNo(encodedFileName);
         log.info("인코딩된 차량 번호 :: {} ", encodedFileName);
