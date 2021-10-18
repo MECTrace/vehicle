@@ -80,8 +80,8 @@ public class VehicleSendingScheduler {
             * 아닌 경우 별도의 로직 없이 전송 X
             * */
             Map<String, List<File>> fileMap = Arrays.stream(fileList)
-                    .filter(file -> verifyFile(file.getName()))
-                    .collect(Collectors.groupingBy(file -> getCarNo(file.getName())));
+                    .filter(file -> verifyFile(file.getName().replaceAll(" ","")))
+                    .collect(Collectors.groupingBy(file -> getCarNo(file.getName().replaceAll(" ",""))));
 
             for(Map.Entry<String, List<File>> entry : fileMap.entrySet()) {
                 ResponseEntity<String> response = sendRequest(entry.getKey(), entry.getValue());
@@ -104,7 +104,7 @@ public class VehicleSendingScheduler {
 
     @SneakyThrows
     private boolean verifyFile(String fileName) {
-        String carNo = getCarNo(fileName.replaceAll(" ",""));
+        String carNo = getCarNo(fileName);
         return StringUtils.hasText(carNo) ? vehicleCertMap.hasVehicleNo(carNo) : false;
     }
 
