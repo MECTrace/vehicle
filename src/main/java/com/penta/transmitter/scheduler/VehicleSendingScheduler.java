@@ -113,6 +113,12 @@ public class VehicleSendingScheduler {
     }
 
     private String getCarNo(String fileName) {
+        Pattern testPattern = Pattern.compile("\\d{2,3}[A-Z]{1}\\d{4}");
+        Matcher testMatcher = testPattern.matcher(fileName);
+        if(testMatcher.find()) {
+            log.info("영문은된다!!!!!!!!!!!! >> {}", fileName);
+        }
+
         Pattern pattern = Pattern.compile("\\d{2,3}[가-힣]{1}\\d{4}");
         Matcher matcher = pattern.matcher(fileName);
         return matcher.find() ? matcher.group() : "";
