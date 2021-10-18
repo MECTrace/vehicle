@@ -105,7 +105,7 @@ public class VehicleSendingScheduler {
     @SneakyThrows
     private boolean verifyFile(String fileName) {
         log.info("fileName :: {}",fileName);
-        String encodedFileName = new String(fileName.getBytes(StandardCharsets.UTF_8),"utf-8");
+        String encodedFileName = new String(fileName.getBytes(StandardCharsets.UTF_8),"euc-kr");
         String carNo = getCarNo(encodedFileName);
         log.info("인코딩된 차량 번호 :: {} ", encodedFileName);
         log.info("file명에 차량번호가 있는지 :: {}  & vehicleCertMap에 해당 차량의 정보가 있는지 :: {}", StringUtils.hasText(carNo),  vehicleCertMap.hasVehicleNo(carNo));
