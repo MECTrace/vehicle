@@ -104,7 +104,7 @@ public class VehicleSendingScheduler {
 
     @SneakyThrows
     private boolean verifyFile(String fileName) {
-        String carNo = getCarNo(fileName);
+        String carNo = getCarNo(fileName.replaceAll(" ",""));
         return StringUtils.hasText(carNo) ? vehicleCertMap.hasVehicleNo(carNo) : false;
     }
 
