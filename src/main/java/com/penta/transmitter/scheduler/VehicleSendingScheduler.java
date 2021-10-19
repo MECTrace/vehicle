@@ -120,9 +120,6 @@ public class VehicleSendingScheduler {
         VehicleCert vehicleCert = vehicleCertMap.getVehicleCertInfo(carNo);
 
         log.info("vehicleCert's certPath ... :: {}",vehicleCert.getCertPath());
-        // 서명
-        Signature signature = Signature.getInstance("SHA256withRSA");
-        signature.initSign(getPrivateKey(vehicleCert));
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
