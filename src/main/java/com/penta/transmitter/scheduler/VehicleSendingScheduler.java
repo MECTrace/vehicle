@@ -70,6 +70,8 @@ public class VehicleSendingScheduler {
     @SneakyThrows
     public void sendToEdge() {
 
+        log.info("------- ------- sendToEdge 실행 ------- -------");
+
         if (checkFilePresent(this.targetLocation)) {
 
             File dir = new File(this.targetLocation.toString());
