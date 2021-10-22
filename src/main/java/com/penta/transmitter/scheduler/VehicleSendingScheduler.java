@@ -74,6 +74,8 @@ public class VehicleSendingScheduler {
 
         if (checkFilePresent(this.targetLocation)) {
 
+            log.info("------- ------- file exists ------- -------");
+
             File dir = new File(this.targetLocation.toString());
             File[] fileList = dir.listFiles();
 
@@ -99,6 +101,8 @@ public class VehicleSendingScheduler {
                 }
             }
 
+        } else {
+            log.info("------- ------- {} 에 파일이 존재하지 않음 ------- -------",this.targetLocation.toString());
         }
 
     }
