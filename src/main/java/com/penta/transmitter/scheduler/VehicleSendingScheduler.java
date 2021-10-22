@@ -74,6 +74,7 @@ public class VehicleSendingScheduler {
 
         if (checkFilePresent(this.targetLocation)) {
 
+            log.info("------- ------- {} ------- -------",this.targetLocation.toString());
             log.info("------- ------- file exists ------- -------");
 
             File dir = new File(this.targetLocation.toString());
