@@ -112,6 +112,9 @@ public class VehicleSendingScheduler {
     @SneakyThrows
     private boolean verifyFile(String fileName) {
         String carNo = getCarNo(fileName);
+        log.info("------- ------- verifyFile() ------- -------");
+        log.info("fileName :: {} ", fileName);
+        log.info("carNo :: {} ", carNo);
         return StringUtils.hasText(carNo) ? vehicleCertMap.hasVehicleNo(carNo) : false;
     }
 
