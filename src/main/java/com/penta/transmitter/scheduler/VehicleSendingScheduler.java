@@ -1,6 +1,7 @@
 package com.penta.transmitter.scheduler;
 
 import com.penta.transmitter.configuration.FileInfoProperties;
+import com.penta.transmitter.constant.EdgeNode;
 import com.penta.transmitter.constant.VehicleCertMap;
 import com.penta.transmitter.domain.VehicleCert;
 import lombok.SneakyThrows;
@@ -9,10 +10,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -25,15 +28,17 @@ import javax.annotation.PostConstruct;
 import javax.net.ssl.SSLContext;
 import java.io.File;
 import java.io.FileInputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.security.*;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.Signature;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -45,9 +50,6 @@ import java.util.stream.Stream;
 public class VehicleSendingScheduler {
 
     private VehicleCertMap vehicleCertMap;
-
-    @Value("${target.edge-node.url}")
-    private String edgeNodeURL;
 
     private final Path targetLocation;
     private final Path doneLocation;
@@ -103,7 +105,7 @@ public class VehicleSendingScheduler {
             }
 
         } else {
-            log.info("------- ------- {} 에 파일이 존재하지 않음 ------- -------",this.targetLocation.toString());
+            log.info("------- {} 에 파일이 존재하지 않음 -------",this.targetLocation.toString());
         }
 
     }
@@ -166,7 +168,9 @@ public class VehicleSendingScheduler {
 
         byte[] fileBytes = Files.readAllBytes(file.toPath());
         signature.update(fileBytes);
+
         byte[] digitalSignature = signature.sign();
+
 
         // body에 디지털 서명값 추가
         ByteArrayResource resource = new ByteArrayResource(digitalSignature) {
@@ -183,7 +187,11 @@ public class VehicleSendingScheduler {
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, header);
 
-        return getRestTemplate(vehicleCert).postForEntity(edgeNodeURL, requestEntity, String.class);
+        // edge random 전송
+        EdgeNode edge = EdgeNode.values()[new Random().nextInt(4)];
+
+        return getRestTemplate(vehicleCert)
+                .postForEntity("https://" + edge.getIP() + ":8443/api/edge/upload/vehicle/", requestEntity, String.class);
     }
 
     @SneakyThrows
