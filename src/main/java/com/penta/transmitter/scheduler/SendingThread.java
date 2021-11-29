@@ -123,13 +123,14 @@ public class SendingThread implements Runnable {
         EdgeNode edge = EdgeNode.values()[new Random().nextInt(4)];
 
         // TODO :: 로컬테스트용 아래 주석 풀고 사용
+         /*
         return getRestTemplate(vehicleCert)
-                .postForEntity("https://localhost:8443/api/edge/upload/vehicle/", requestEntity, String.class);
+                .postForEntity("https://127.0.0.1:8443/api/edge/upload/vehicle/", requestEntity, String.class);
+        */
 
-        /*
         return getRestTemplate(vehicleCert)
                 .postForEntity("https://" + edge.getIP() + ":8443/api/edge/upload/vehicle/", requestEntity, String.class);
-         */
+
     }
 
 
@@ -159,10 +160,11 @@ public class SendingThread implements Runnable {
 
     @SneakyThrows
     private PrivateKey getPrivateKey(VehicleCert cert) {
-        KeyStore keyStore = KeyStore.getInstance("JKS");
+        KeyStore keyStore = KeyStore.getInstance("PKCS12");
         keyStore.load(new FileInputStream(cert.getCertPath()), cert.getCertPassword().toCharArray());
         // keyStore.load(new FileInputStream("/Users/penta/IdeaProjects/cloudEdge/transmitter/src/main/resources/client-key.jks"), this.keyPassword.toCharArray());
-        return (PrivateKey) keyStore.getKey(cert.getCertAlias(), cert.getCertPassword().toCharArray());
+       // return (PrivateKey) keyStore.getKey(cert.getCertAlias(), cert.getCertPassword().toCharArray());
+       return (PrivateKey) keyStore.getKey("1", cert.getCertPassword().toCharArray());
     }
 
 
