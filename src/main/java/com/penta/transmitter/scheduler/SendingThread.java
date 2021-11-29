@@ -164,7 +164,7 @@ public class SendingThread implements Runnable {
         keyStore.load(new FileInputStream(cert.getCertPath()), cert.getCertPassword().toCharArray());
         // keyStore.load(new FileInputStream("/Users/penta/IdeaProjects/cloudEdge/transmitter/src/main/resources/client-key.jks"), this.keyPassword.toCharArray());
        // return (PrivateKey) keyStore.getKey(cert.getCertAlias(), cert.getCertPassword().toCharArray());
-       return (PrivateKey) keyStore.getKey("1", cert.getCertPassword().toCharArray());
+       return (PrivateKey) keyStore.getKey(cert.getCertAlias(), cert.getCertPassword().toCharArray());
     }
 
 
