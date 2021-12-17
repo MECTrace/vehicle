@@ -120,7 +120,7 @@ public class SendingThread implements Runnable {
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, header);
 
         // edge random 전송
-        EdgeNode edge = EdgeNode.values()[new Random().nextInt(4)];
+        EdgeNode edge = EdgeNode.values()[new Random().nextInt(10)];
 
         // TODO :: 로컬테스트용 아래 주석 풀고 사용
          /*
