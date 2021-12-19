@@ -1,33 +1,10 @@
 package com.penta.transmitter.scheduler;
 
-import com.penta.transmitter.configuration.FileInfoProperties;
-import com.penta.transmitter.constant.VehicleCertMap;
-import com.penta.transmitter.domain.VehicleCert;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.env.Environment;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-
-import javax.annotation.PostConstruct;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
-@Component
-@Slf4j
 public class VehicleSendingScheduler {
 
+    /*
     private VehicleCertMap vehicleCertMap;
 
     private final Path targetLocation;
@@ -48,7 +25,6 @@ public class VehicleSendingScheduler {
         Files.createDirectories(doneLocation);
     }
 
-
     @Scheduled(fixedDelay = 60000)
     @SneakyThrows
     public void sendToEdge() {
@@ -65,17 +41,17 @@ public class VehicleSendingScheduler {
             File dir = new File(this.targetLocation.toString());
             File[] fileList = dir.listFiles();
 
-            /*
-            * 파일명에 차량번호가 존재하고 & VehicleCertMap에 등록된 차량번호인 경우에만 전송.
-            * 아닌 경우 별도의 로직 없이 전송 X
-            * */
+            //
+            // 파일명에 차량번호가 존재하고 & VehicleCertMap에 등록된 차량번호인 경우에만 전송.
+            // 아닌 경우 별도의 로직 없이 전송 X
+
             Map<String, List<File>> fileMap = Arrays.stream(fileList)
                     .filter(file -> verifyFile(file.getName().replaceAll(" ","")))
                     .filter(file -> {
                         String carNo = getCarNo(file.getName());
                         int lastNumberOfCarNo = Character.getNumericValue(carNo.charAt(carNo.length()-1));
                         if(port == 8082) {
-                            // 차량번호 뒷자리가 0 또는 짝수
+                            // 차량번호 뒷자리가 0 또는 짝
                             return lastNumberOfCarNo == 0 || lastNumberOfCarNo%2 == 0;
                         } else {
                             // 차량번호 뒷자리가 홀수
@@ -93,6 +69,7 @@ public class VehicleSendingScheduler {
             }
 
             Thread[] t = new Thread[limited];
+            log.info("생성된 Thread Size :: {} ", limited);
 
             for(int i = 0; i < limited; i++) {
                 String key = keyArray[i].toString();
@@ -116,7 +93,9 @@ public class VehicleSendingScheduler {
         log.info("------- ------- verifyFile() ------- -------");
         log.info("fileName :: {} ", fileName);
         log.info("carNo :: {} ", carNo);
-        return StringUtils.hasText(carNo) ? vehicleCertMap.hasVehicleNo(carNo) : false;
+        boolean result = StringUtils.hasText(carNo) ? vehicleCertMap.hasVehicleNo(carNo) : false;
+        log.info("차량파일 검증 결과(차량번호가 Map에 존재하고 && 파일명의 차량번호가 정규식이 읽을 수 있는 포맷인지) :: {}", result);
+        return result;
     }
 
     private String getCarNo(String fileName) {
@@ -133,6 +112,7 @@ public class VehicleSendingScheduler {
         }
     }
 
+*/
 
 }
 

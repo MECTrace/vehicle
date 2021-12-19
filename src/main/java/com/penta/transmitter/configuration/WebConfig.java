@@ -1,21 +1,10 @@
 package com.penta.transmitter.configuration;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.ssl.SSLContextBuilder;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.web.client.RestTemplate;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import java.net.URL;
-import java.nio.file.Paths;
+/*
 
-
+// 사용안함
+// 차량별 인증서 매핑이 필요하므로 차량별 template 사용으로 변경
 @Configuration
 public class WebConfig {
 
@@ -51,3 +40,5 @@ public class WebConfig {
     }
 
 }
+
+ */
