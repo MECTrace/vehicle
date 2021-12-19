@@ -75,11 +75,11 @@ public class SendingEvent implements ApplicationListener<ApplicationStartedEvent
     @Override
     public void onApplicationEvent(ApplicationStartedEvent applicationStartedEvent) {
 
-        log.info("------- ------- sendToEdge 실행 ------- -------");
+        //log.info("------- ------- sendToEdge 실행 ------- -------");
 
         if (checkFilePresent(this.targetLocation)) {
 
-            log.info("------- ------- file exists ------- -------");
+            //log.info("------- ------- file exists ------- -------");
 
             File dir = new File(this.targetLocation.toString());
             File[] fileList = dir.listFiles();
@@ -94,16 +94,17 @@ public class SendingEvent implements ApplicationListener<ApplicationStartedEvent
 
             Object[] keyArray = fileMap.keySet().toArray();
 
+            int count = 1;
             for (int i = 0; i < keyArray.length; i++) {
                 String key = keyArray[i].toString();
                 List<File> values = fileMap.get(key);
                 VehicleCert vehicleCert = vehicleCertMap.getVehicleCertInfo(key);
                 for (File file : values) {
 
+                    log.info("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣count :: {}",count++ +"▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣");
                     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
                     body.add("file", new FileSystemResource(file));
                     body.add("signature", getSignatureResource(file, vehicleCert));
-
 
                     ResponseEntity<String> response = sendRequest(body, vehicleCert);
 
@@ -113,8 +114,10 @@ public class SendingEvent implements ApplicationListener<ApplicationStartedEvent
                             Path orgLocation = this.targetLocation.resolve(file.getName());
                             Path movedTarget = this.doneLocation.resolve(file.getName());
                             Files.move(orgLocation, movedTarget, StandardCopyOption.REPLACE_EXISTING);
+                            log.info("▣▣▣▣▣▣▣▣▣▣▣▣▣▣▣파일이동 :: {}", file.getName());
                         }
                     }
+
 
                 }
             }
@@ -129,11 +132,7 @@ public class SendingEvent implements ApplicationListener<ApplicationStartedEvent
     @SneakyThrows
     private boolean verifyFile(String fileName) {
         String carNo = getCarNo(fileName);
-        log.info("------- ------- verifyFile() ------- -------");
-        log.info("fileName :: {} ", fileName);
-        log.info("carNo :: {} ", carNo);
         boolean result = StringUtils.hasText(carNo) ? vehicleCertMap.hasVehicleNo(carNo) : false;
-        log.info("차량파일 검증 결과(차량번호가 Map에 존재하고 && 파일명의 차량번호가 정규식이 읽을 수 있는 포맷인지) :: {}", result);
         return result;
     }
 
